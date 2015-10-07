@@ -39,7 +39,7 @@ uicontrol('Parent',fig,'Style','pushbutton',...
 
             
 pd_data = plot(pd_ax,sys.x,sys.pd);
-ylabel(pd_ax,'Probability Density, |\Phi^2|');
+ylabel(pd_ax,'Probability Density, |\Phi|^2');
 
 % run simulation
 while ishandle(fig)
@@ -54,6 +54,8 @@ while ishandle(fig)
     
     wave_ax.XLim = [sys.x_lbound,sys.x_ubound];
     pd_ax.XLim = [sys.x_lbound,sys.x_ubound];
+    wave_ax.YLim = [0,0.2];
+    pd_ax.YLim = [0,0.05];
 
 
     % wait for some time
@@ -97,6 +99,7 @@ end
 % a function to change the x step
 function change_x_step(hObject,callbackdata,sys,label)
    sys.x_step = hObject.Value;
+   sys.reset();
    label.String = sprintf('X Step = %2.2f',sys.x_step);
 end
 
