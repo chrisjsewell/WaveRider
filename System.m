@@ -1,5 +1,9 @@
 classdef System < handle
    properties
+       % using natural units
+       h_bar = 1
+       i = sqrt(-1)
+       
        t = 0
        t_step = 1
        t_step_bounds = [0.1,10]
@@ -10,11 +14,21 @@ classdef System < handle
        x_step = 1
        x_step_bounds = [0.1,1]
        
+       init_var = 1
+       %init_var_bounds = [0.1,10]
+       init_x = 0
+       
+       mass = 1
+       
        propogate = false
    end
    methods
        %initialiser
        function obj = System()
+       end
+       %reset system
+       function reset(obj)
+            obj.t = 0;
        end
        % a function to return the values for x,
        function x = x(obj)
@@ -30,7 +44,8 @@ classdef System < handle
        end
        % a function to return the values for the probability density,
        function pd = pd(obj)
-           pd = sin(obj.x - obj.t).^2;
+           amp = 1/sqrt(2*pi*obj.init_var);
+           pd = amp*exp(-(obj.x - obj.t/10).^2/2*obj.init_var);
        end
        % step the time
        function step_time(obj)
