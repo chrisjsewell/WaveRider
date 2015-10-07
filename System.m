@@ -20,15 +20,19 @@ classdef System < handle
        
        mass = 1
        
+       D
+       
        propogate = false
    end
    methods
        %initialiser
        function obj = System()
+           obj.calc_D();
        end
        %reset system
        function reset(obj)
             obj.t = 0;
+            obj.calc_D();
        end
        % a function to return the values for x,
        function x = x(obj)
@@ -47,6 +51,15 @@ classdef System < handle
            amp = 1/sqrt(2*pi*obj.init_var);
            pd = amp*exp(-(obj.x - obj.t/10).^2/2*obj.init_var);
        end
+       % a function to calculate D (using crank-nicholson method)
+       function calc_D(obj)
+           periodic = true;
+           v_x = zeros(10,1);
+           obj.D = C_N_function(obj.h_bar, obj.i, obj.mass, ...
+                            obj.x_step, obj.t_step, ...
+                            v_x, ...
+                            periodic);
+       end       
        % step the time
        function step_time(obj)
            if obj.propogate
