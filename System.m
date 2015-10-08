@@ -25,7 +25,7 @@ classdef System < handle
        x_lbound = 0
        x_ubound = 5
        x_ubound_limit = [1,10]       
-       periodic = false
+       periodic = true
        
        % particle
        mass = 1
@@ -42,12 +42,14 @@ classdef System < handle
        function obj = System()
            obj.set_x_step(obj.x_step);
            obj.init_psi();
+           obj.init_V();
            obj.init_D();
        end
        % reset the system
        function reset(obj)
             obj.t = 0;
             obj.init_psi();
+            obj.init_V();
             obj.init_D();
        end
        % set x step
@@ -59,8 +61,12 @@ classdef System < handle
        % a function to intialise the wavefunction
        function init_psi(obj)
            amp = 1/sqrt(2*pi*obj.init_var);
-           obj.psi = transpose(amp*exp(-(obj.x-obj.init_x).^2/2*obj.init_var + obj.i*obj.x*obj.init_k));
-           obj.V = zeros(length(obj.psi),1);
+           psi = amp*exp(-(obj.x-obj.init_x).^2/2*obj.init_var + obj.i*obj.x*obj.init_k);
+           obj.psi = transpose(psi);
+       end
+       % a function to initialise the potential
+       function init_V(obj)
+           obj.V = zeros(length(obj.x),1);
        end
         % a function to intialise D (using crank-nicholson method)
        function init_D(obj)
