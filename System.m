@@ -5,41 +5,42 @@ classdef System < handle
        i = sqrt(-1)
        
        % space
+       x_step_bounds = [0.01,0.2]
        x_step = 0.1
-       
-       % other
-       D       
-   end
-   properties
+
        % time 
        t = 0
-       t_step = 0.1
-       t_step_bounds = [0.01,0.2]
-       
-       % space
-       x_step_bounds = [0.01,0.2]
-       x_lbound = 0
-       x_ubound = 10
-       x_ubound_limit = [10,100]       
-       periodic = true
+       t_step
        
        % particle
-       mass = 1
-       k = 4
        psi
-       init_var = 4
-       %init_var_bounds = [0.1,10]
-       init_x = 1
+       D       
        
        % potential
        V
+   end
+   properties
        
+       % space
+       x_lbound = 0
+       x_ubound = 5
+       x_ubound_limit = [1,10]       
+       periodic = false
+       
+       % particle
+       mass = 1
+       init_k = 4
+       init_var = 4
+       %init_var_bounds = [0.1,10]
+       init_x = 1
+              
        % other
        propogate = false
    end
    methods
        % initialise the system
        function obj = System()
+           obj.set_x_step(obj.x_step);
            obj.init_psi();
            obj.init_D();
        end
@@ -52,12 +53,13 @@ classdef System < handle
        % set x step
        function set_x_step(obj,x_step)
            obj.x_step = x_step;
+           obj.t_step = 0.25*x_step^2;
            obj.reset();
        end
        % a function to intialise the wavefunction
        function init_psi(obj)
            amp = 1/sqrt(2*pi*obj.init_var);
-           obj.psi = transpose(amp*exp(-(obj.x-obj.init_x).^2/2*obj.init_var + obj.i*obj.x*obj.k));
+           obj.psi = transpose(amp*exp(-(obj.x-obj.init_x).^2/2*obj.init_var + obj.i*obj.x*obj.init_k));
            obj.V = zeros(length(obj.psi),1);
        end
         % a function to intialise D (using crank-nicholson method)
@@ -88,6 +90,10 @@ classdef System < handle
        % a function to return the values for the probability density,
        function pd = pd(obj)
            pd = abs(obj.psi).^2;
+       end
+       % a function to return the sum of the probability density,
+       function sum_pd = sum_pd(obj)
+           sum_pd = sum(obj.pd());
        end
    end
    
