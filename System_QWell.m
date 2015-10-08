@@ -1,7 +1,6 @@
 classdef System_QWell < System
 properties
-    init_x = 2
-    well_center = 2
+    well_center = 1
     well_steep = 10
     well_steep_boundary = [0,20]
     well_height = 10
