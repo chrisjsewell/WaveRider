@@ -1,20 +1,26 @@
 classdef System < handle
-   properties
+   properties (SetAccess = protected)
        % constants (using natural units)
        h_bar = 1
        i = sqrt(-1)
        
+       % space
+       x_step = 0.1
+       
+       % other
+       D       
+   end
+   properties
        % time 
        t = 0
        t_step = 0.1
-       t_step_bounds = [0.1,1]
+       t_step_bounds = [0.01,0.2]
        
        % space
+       x_step_bounds = [0.01,0.2]
        x_lbound = 0
        x_ubound = 10
-       x_ubound_limit = [10,100]
-       x_step = 0.1
-       x_step_bounds = [0.1,1]
+       x_ubound_limit = [10,100]       
        periodic = true
        
        % particle
@@ -23,26 +29,30 @@ classdef System < handle
        psi
        init_var = 4
        %init_var_bounds = [0.1,10]
-       init_x = 5
+       init_x = 1
        
        % potential
        V
        
        % other
-       D       
        propogate = false
    end
    methods
-       %initialise the system
+       % initialise the system
        function obj = System()
            obj.init_psi();
            obj.init_D();
        end
-       %reset the system
+       % reset the system
        function reset(obj)
             obj.t = 0;
             obj.init_psi();
             obj.init_D();
+       end
+       % set x step
+       function set_x_step(obj,x_step)
+           obj.x_step = x_step;
+           obj.reset();
        end
        % a function to intialise the wavefunction
        function init_psi(obj)

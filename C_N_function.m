@@ -5,7 +5,6 @@ size=length(v_x);
 vector=ones(size, 1);
 vector_b=ones(size-1,1);
 
-
 alpha= (i*h_bar/delta_t)*vector - (h_bar*h_bar/(2*m*delta_x*delta_x))*vector - v_x/2;
 beta= h_bar*h_bar/(4*m*delta_x*delta_x);
 vec_beta= beta*vector_b;
