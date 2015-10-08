@@ -1,14 +1,16 @@
 function run()
-% intialise system with t_step, x_ubound, x_step
+%% Intialise System
 sys=System();
 
-%open and setup figure [l b w h]
+%% Open and Setup GUI 
 fig=figure;
 bgcolor = fig.Color;
 
+% Create Axes (positioning [l b w h])
 wave_ax = axes('Parent',fig,'position',[0.1 0.6 0.6 0.35]);
 pd_ax = axes('Parent',fig,'position',[0.1 0.15 0.6 0.35]);
 
+% Create Controls
 % a button to turn on/off the propogation of the wavefunction
 uicontrol('Parent',fig,'Style','togglebutton',...
     'String','Propogate Sim','position',[420 350 100 50],...
@@ -37,14 +39,16 @@ uicontrol('Parent',fig,'Style','pushbutton',...
     'String','Reset Sim','position',[420 100 100 50],...
     'Callback',{@reset_system,sys});
 
-            
+% intialise plots            
 pd_data = plot(pd_ax,sys.x,sys.pd);
 ylabel(pd_ax,'Probability Density, |\Phi|^2');
 
-% run simulation
+%% Run Simulation
 while ishandle(fig)
+    %propogate system
     sys.step_time();
 
+    % update plots
     plot(wave_ax,sys.x,sys.real_phi, sys.x,sys.img_phi)
     xlabel(wave_ax, num2str(sys.t));
     ylabel(wave_ax,'Wavefunction, \Phi');    
@@ -62,6 +66,8 @@ while ishandle(fig)
     pause(0.1);
 end
 end
+
+%% Callback functions
 % a function to add label to edit
 function edit_label(parent,string,l,b,w,h,bgcolor)
 	uicontrol('Parent',parent,'Style','text','Position',[l-50 b 50 h],...

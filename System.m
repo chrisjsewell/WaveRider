@@ -19,6 +19,7 @@ classdef System < handle
        
        % particle
        mass = 1
+       k = 4
        psi
        init_var = 4
        %init_var_bounds = [0.1,10]
@@ -46,7 +47,7 @@ classdef System < handle
        % a function to intialise the wavefunction
        function init_psi(obj)
            amp = 1/sqrt(2*pi*obj.init_var);
-           obj.psi = transpose(amp*exp(-(obj.x-obj.init_x).^2/2*obj.init_var));
+           obj.psi = transpose(amp*exp(-(obj.x-obj.init_x).^2/2*obj.init_var + obj.i*obj.x*obj.k));
            obj.V = zeros(length(obj.psi),1);
        end
         % a function to intialise D (using crank-nicholson method)
