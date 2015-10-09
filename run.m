@@ -125,8 +125,8 @@ while ishandle(fig)
 
     wave_ax.XLim = [sys.x_lbound,sys.x_ubound];
     pd_ax.XLim = [sys.x_lbound,sys.x_ubound];
-    wave_ax.YLim = [0,0.2];
-    pd_ax.YLim = [0,0.05];
+    wave_ax.YLim = [0,0.3];
+    pd_ax.YLim = [0,0.2];
     
     data_label1.String = ['Simulation Data: t = ',num2str(sys.t)];
     data_label2.String = ['Total PD = ',num2str(sys.sum_pd())];

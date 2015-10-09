@@ -32,7 +32,7 @@ classdef System < handle
        init_k = 4
        init_var = 4
        %init_var_bounds = [0.1,10]
-       init_x = 1
+       init_x = 2
               
        % other
        propogate = false
@@ -62,6 +62,7 @@ classdef System < handle
        function init_psi(obj)
            amp = 1/sqrt(2*pi*obj.init_var);
            psi = amp*exp(-(obj.x-obj.init_x).^2/2*obj.init_var + obj.i*obj.x*obj.init_k);
+           psi = psi/sqrt(psi*psi');
            obj.psi = transpose(psi);
        end
        % a function to initialise the potential
